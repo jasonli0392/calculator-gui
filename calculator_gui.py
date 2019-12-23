@@ -1,53 +1,48 @@
-import tkinter as tk
+from tkinter import *
 from functools import partial
 
-#y = mx + b GUI, input m,x,b values to show y
 def create_ymxb_gui():
-	ymxb_gui = tk.Tk()
+	ymxb_gui = Toplevel()
 	ymxb_gui.title('y = mx + b')
 
-	tk.Label(ymxb_gui, text='m').grid(row=1)
-	tk.Label(ymxb_gui, text='x').grid(row=2)
-	tk.Label(ymxb_gui, text='b').grid(row=3)
+	Label(ymxb_gui, text='m').grid(row=2,column=0)
+	Label(ymxb_gui, text='x').grid(row=3,column=0)
+	Label(ymxb_gui, text='b').grid(row=4,column=0)
 
-	y = tk.StringVar()
-	m = tk.StringVar()
-	x = tk.StringVar()
-	b = tk.StringVar()
+	y = StringVar()
+	m = StringVar()
+	x = StringVar()
+	b = StringVar()
 
-	y_entry = tk.Entry(ymxb_gui,textvariable=y)
-	y_entry.grid(row=0,column=1)
-	m_entry = tk.Entry(ymxb_gui,textvariable=m)
-	m_entry.grid(row=1,column=1)
-	x_entry = tk.Entry(ymxb_gui,textvariable=x)
-	x_entry.grid(row=2,column=1)
-	b_entry = tk.Entry(ymxb_gui,textvariable=b)
-	b_entry.grid(row=3,column=1)
+	y.set("enter values for m, x, and b")
 
-	calculate_button = tk.Button(ymxb_gui, text='calculate', 
-								 command = partial(calculate_ymxb, m_entry, x_entry, b_entry))
-	calculate_button.grid(row=4,column=0)
-	return_button = tk.Button(ymxb_gui, text='return',command = ymxb_gui.destroy)
-	return_button.grid(row=4,column=1)
+	Entry(ymxb_gui,textvariable=y).grid(row=1,column=1)
+	Entry(ymxb_gui,textvariable=m).grid(row=2,column=1)
+	Entry(ymxb_gui,textvariable=x).grid(row=3,column=1)
+	Entry(ymxb_gui,textvariable=b).grid(row=4,column=1)
 
-	ymxb_gui.mainloop()
+	Button(ymxb_gui, text='calculate', command = partial(calculate_ymxb, m, x, b)).grid(row=6,column=0)
+	Button(ymxb_gui, text='return', command = ymxb_gui.destroy).grid(row=6,column=1)
 
-#calculating y = mx + b
 def calculate_ymxb(m, x, b):
-	m = m.get()
-	x = x.get()
-	b = b.get()
-	answer = float(m) * float(x) + float(b)
+	answer = float(m.get()) * float(x.get()) + float(b.get())
+	quote = "the y-value to your linear equation is %s" % answer
+	answer_gui = Toplevel()
+	answer_gui.title("ANSWER")
+	t = Text(answer_gui)
+	t.grid()
+	t.insert(END, quote)
+	Button(answer_gui, text='return', command = answer_gui.destroy).grid(row=10)
 
-calculator = tk.Tk()
-calculator.title('Calculator')
+def main():
+	calculator = Tk()
+	calculator.title('Calculator')
 
-ymxb_button = tk.Button(calculator, text='y = mx + b', command = create_ymxb_gui)
-ymxb_button.pack()
+	Button(calculator, text='y = mx + b', command = create_ymxb_gui).grid(row=0,column=0)
 
-quit_button = tk.Button(calculator, text='QUIT', command = calculator.destroy)
-quit_button.pack()
+	Button(calculator, text='quit', command = calculator.destroy).grid(row=5,column=5)
 
-calculator.mainloop()
+	calculator.mainloop()
 
-#TODO: redo app as a class
+if __name__ == "__main__":
+	main()
